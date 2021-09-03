@@ -33,7 +33,7 @@ handler.on('push', function (event) {
     event.payload.ref);
   // 判断main分支变动时执行，可根据payload.ref区分分支
   if (event.payload.ref === 'refs/heads/main') {
-    run_cmd('sh', ['./dockerDeploy/deploy.sh',name], function(text){ console.log(text) });
+    run_cmd('sh', ['./dockerDeploy/deploy.sh', name, 3002], function(text){ console.log(text) });
   }
 })
 

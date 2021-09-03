@@ -1,9 +1,12 @@
 #!/bin/bash
 
 WEB_NAME="$1"
+PORT="$2"
 # 服务器上的项目代码库路径
 PROJECT_PATH="/root/project/${WEB_NAME}/"
 
+
+echo '部署开始.....'
 
 cd $PROJECT_PATH
 
@@ -32,5 +35,5 @@ echo '删除空悬镜像dangling image'
 docker ps -a -f "name=^${WEB_NAME}-container" --format="{{.Names}}" | xargs -r docker stop | xargs -r docker rm
 echo '销毁旧容器'
 
-docker run -d -p 3002:80 -v /usr/docker_nginx_data/${WEB_NAME}/conf.d:/etc/nginx/conf.d -v /usr/docker_nginx_data/log:/var/log/nginx --name ${WEB_NAME}-container ${WEB_NAME}-image:latest
+docker run -d -p ${PORT}:80 -v /usr/docker_nginx_data/${WEB_NAME}/conf.d:/etc/nginx/conf.d -v /usr/docker_nginx_data/log:/var/log/nginx --name ${WEB_NAME}-container ${WEB_NAME}-image:latest
 echo '以新镜像创建的容器运行并挂载本地的nginx配置文件'
